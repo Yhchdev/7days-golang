@@ -8,6 +8,8 @@ import (
 type handlerFunc func(w http.ResponseWriter, r *http.Request)
 
 type Engine struct {
+	// 用map 类型实现路由表
+	// [method-url]HandlerFunc
 	route map[string]handlerFunc
 }
 
@@ -15,11 +17,13 @@ func New() *Engine {
 	return &Engine{route: make(map[string]handlerFunc)}
 }
 
+// 注册路由
 func (engine *Engine) addRoute(method string, pattern string, handle handlerFunc) {
 	key := method + "-" + pattern
 	engine.route[key] = handle
 }
 
+// 调用Get或Post方法注册路由
 func (engine *Engine) Get(pattern string, handle handlerFunc) {
 	engine.addRoute("GET", pattern, handle)
 }
